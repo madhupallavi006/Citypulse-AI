@@ -7,6 +7,7 @@ from backend.services.traffic_service import (
     fetch_road_risk_by_id
 )
 from backend.services.prediction_service import fetch_ml_predictions
+from backend.services.xai_service import explain_corridor_risk
 
 router = APIRouter(prefix="/api/traffic", tags=["Traffic"])
 
@@ -44,3 +45,11 @@ def get_traffic_predictions():
 @router.get("/risk/{road_id}")
 def get_road_risk(road_id: str):
     return fetch_road_risk_by_id(road_id)
+
+@router.get("/explain/{road_id}")
+def explain_traffic_risk(road_id: str):
+    explanation = explain_corridor_risk(road_id)
+    return {
+        "status": "success",
+        "explanation": explanation
+    }
