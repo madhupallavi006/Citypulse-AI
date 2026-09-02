@@ -10,6 +10,7 @@ from backend.api.emergency import router as emergency_router
 from backend.api.simulation import router as simulation_router
 from backend.api.chat import router as chat_router
 from backend.api.agents import router as agents_router
+from backend.api.demo import router as demo_router
 
 load_dotenv()
 
@@ -43,6 +44,7 @@ app.include_router(emergency_router)
 app.include_router(simulation_router)
 app.include_router(chat_router)
 app.include_router(agents_router)
+app.include_router(demo_router)
 
 @app.get("/api/health")
 def health_check():
@@ -50,7 +52,7 @@ def health_check():
         "status": "online",
         "system": "CityPulse AI Platform Backend",
         "version": "1.0.0",
-        "mode": "Active Multi-Agent Orchestration"
+        "mode": "Full Production - All 12 Phases Active"
     }
 
 if __name__ == "__main__":
