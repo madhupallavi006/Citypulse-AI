@@ -51,12 +51,17 @@ export const simulateEmergency = async (payload) => {
 };
 
 export const getDigitalTwin = async () => {
-  const response = await api.get('/api/digital-twin');
+  const response = await api.get('/api/simulation/state');
+  return response.data;
+};
+
+export const runScenarioSimulation = async (payload) => {
+  const response = await api.post('/api/simulation/what-if', payload);
   return response.data;
 };
 
 export const triggerScenario = async (payload) => {
-  const response = await api.post('/api/digital-twin/simulate', payload);
+  const response = await api.post('/api/simulation/override', payload);
   return response.data;
 };
 
