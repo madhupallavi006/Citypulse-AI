@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+dist/
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Environment & Config
+.env
+.env.*
+!.env.example
+
+# Vector DB & Caches
+.chroma/
+.cache/
+*.log
+*.sqlite3
+*.db
+data/chroma_db/
+data/citypulse.db
+
+# IDE & OS
+.DS_Store
+.vscode/
+.idea/
