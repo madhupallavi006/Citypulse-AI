@@ -1,0 +1,32 @@
+[
+  {
+    "id": "SOP-001",
+    "title": "Monsoon Weather & Heavy Rain Traffic Operating Procedure",
+    "category": "Weather Response",
+    "content": "During heavy rainfall (precipitation > 15mm/hr), road surface friction decreases by up to 40% and visibility drops below 200m. Operating Procedure: 1. Reduce target arterial speed limits from 80 km/h to 50 km/h. 2. Extend main green signal phases at low-lying intersections (ORR-03, CBD-02) by +10 to +15 seconds to prevent vehicle queuing in flooded zones. 3. Dispatch drainage maintenance teams to designated bottleneck intersections. 4. Display wet road advisory warnings on Variable Message Signs (VMS)."
+  },
+  {
+    "id": "SOP-002",
+    "title": "Emergency Vehicle Green Corridor Pre-emption Protocol",
+    "category": "Emergency Response",
+    "content": "When a verified emergency vehicle (Ambulance, Fire Engine, Police Dispatch) requests a green corridor: 1. Identify current location and destination nodes in the road graph. 2. Calculate the fastest safe route using real-time predicted congestion weights. 3. Pre-empt traffic signals along the route: switch signal phases to GREEN 30 seconds prior to emergency vehicle arrival. 4. Hold opposing signal phases RED until emergency vehicle passes. 5. Restore normal adaptive signal cycle 45 seconds after passage."
+  },
+  {
+    "id": "SOP-003",
+    "title": "Vehicle Accident & Lane Obstruction Clearing Protocol",
+    "category": "Incident Management",
+    "content": "Upon notification of a traffic accident or commercial vehicle breakdown: 1. Immediately flag target corridor status as CRITICAL. 2. Dispatch quick-response towing units to clear blocked lanes. 3. Reroute incoming traffic via adjacent corridors using NetworkX Dijkstra alternate path routing. 4. Adjust upstream signal timing to throttle incoming vehicle density by 25%. 5. Log incident details in SQLite database for ML model retraining."
+  },
+  {
+    "id": "SOP-004",
+    "title": "Traffic Signal Failure & Manual Intersection Override",
+    "category": "Signal Control",
+    "content": "If a traffic signal controller experiences power failure or communication loss: 1. Revert signal to YELLOW FLASHING mode automatically. 2. Dispatch traffic police officer for manual intersection control. 3. Update digital twin simulation to reflect manual flow control. 4. Alert central dispatch center to initiate hardware telemetry diagnostic check."
+  },
+  {
+    "id": "SOP-005",
+    "title": "Peak Hour Demand Surge & Bottleneck Mitigation Rules",
+    "category": "Congestion Management",
+    "content": "During morning (08:00 - 10:30) and evening (17:30 - 20:00) peak hours: 1. Monitor express corridors for occupancy exceeding 75%. 2. Activate dynamic signal timing adjustments: extend main direction green time by up to +20 seconds. 3. Recommend public transit bus priority extensions at high-volume bus stops. 4. Broadcast live traffic warnings via operator assistant."
+  }
+]
