@@ -1,43 +1,44 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
+from typing import Optional
+from backend.services.emergency_service import (
+    get_active_emergency_corridor,
+    create_emergency_green_corridor
+)
+from backend.services.transit_service import fetch_bus_transit_priorities
 
-router = APIRouter(prefix="/api/emergency", tags=["Emergency Corridor"])
+router = APIRouter(prefix="/api/emergency", tags=["Emergency Corridor & Public Transit"])
 
 class EmergencySimulateRequest(BaseModel):
     vehicle_type: str = "Ambulance"
-    origin: str
-    destination: str
+    origin: str = "J01"
+    destination: str = "J08"
 
 @router.get("")
 def get_emergency_status():
+    corridor = get_active_emergency_corridor()
     return {
         "status": "success",
-        "active_corridor": {
-            "vehicle_id": "AMB-911",
-            "type": "Ambulance",
-            "origin": "Apollo General Hospital",
-            "destination": "City Trauma Center",
-            "recommended_route": "Sector 3 Flyover -> Express Corridor -> Trauma Gate",
-            "intersections_cleared": 4,
-            "total_intersections": 6,
-            "estimated_eta_mins": 8,
-            "time_saved_mins": 12,
-            "signal_priority_active": True
-        }
+        "active_corridor": corridor
     }
 
 @router.post("")
 def simulate_emergency(req: EmergencySimulateRequest):
+    corridor = create_emergency_green_corridor(
+        vehicle_type=req.vehicle_type,
+        origin_node=req.origin,
+        destination_node=req.destination
+    )
     return {
         "status": "success",
-        "message": f"Simulated Emergency Corridor created for {req.vehicle_type}",
-        "corridor_details": {
-            "vehicle_type": req.vehicle_type,
-            "origin": req.origin,
-            "destination": req.destination,
-            "route": f"{req.origin} -> Outer Ring Link -> {req.destination}",
-            "estimated_eta_mins": 9,
-            "time_saved_mins": 11,
-            "simulated": True
-        }
+        "message": f"Simulated Emergency Green Corridor generated for {req.vehicle_type}",
+        "corridor_details": corridor
+    }
+
+@router.get("/transit")
+def get_bus_transit_priorities():
+    priorities = fetch_bus_transit_priorities()
+    return {
+        "status": "success",
+        "bus_priorities": priorities
     }
