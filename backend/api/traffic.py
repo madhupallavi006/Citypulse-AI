@@ -6,6 +6,7 @@ from backend.services.traffic_service import (
     get_latest_telemetry,
     fetch_road_risk_by_id
 )
+from backend.services.prediction_service import fetch_ml_predictions
 
 router = APIRouter(prefix="/api/traffic", tags=["Traffic"])
 
@@ -34,21 +35,7 @@ def get_live_traffic():
 
 @router.get("/predictions")
 def get_traffic_predictions():
-    telemetry = get_latest_telemetry()
-    critical_or_high = [t for t in telemetry if t["risk_level"] in ["HIGH", "CRITICAL"]]
-    
-    predictions = []
-    for road in critical_or_high[:5]:
-        predictions.append({
-            "road_id": road["road_id"],
-            "current_status": f"{road['risk_level']} Congestion",
-            "predicted_risk": road["congestion_risk"],
-            "prediction_horizon_mins": 20,
-            "confidence": 0.88,
-            "main_cause": "High vehicle count + Speed reduction" if road["rainfall"] == 0 else "Rainfall + High density",
-            "recommended_action": f"Reroute traffic around {road['road_id']} corridor"
-        })
-        
+    predictions = fetch_ml_predictions()
     return {
         "status": "success",
         "predictions": predictions
