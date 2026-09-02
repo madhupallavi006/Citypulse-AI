@@ -8,7 +8,7 @@
 [![React 18](https://img.shields.io/badge/React-18-sky?logo=react)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-purple?logo=vite)](https://vitejs.dev/)
 [![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.4-orange?logo=scikit-learn)](https://scikit-learn.org/)
-[![Pytest 100% Passed](https://img.shields.io/badge/Tests-38%2F38%20Passed-brightgreen?logo=pytest)](file:///C:/Users/Madhu/.gemini/antigravity-ide/brain/e72295fb-f57b-4248-9938-b08be0e9eeb2/walkthrough.md)
+[![Pytest 100% Passed](https://img.shields.io/badge/Tests-40%2F40%20Passed-brightgreen?logo=pytest)](file:///C:/Users/Madhu/.gemini/antigravity-ide/brain/e72295fb-f57b-4248-9938-b08be0e9eeb2/walkthrough.md)
 
 ---
 
@@ -62,7 +62,7 @@ Instead of reacting after gridlock occurs, CityPulse AI combines real-time synth
   - Transit Surge Factors
 
 ### 7. RAG Knowledge Base & Dual LLM Operator Assistant
-- **RAG Knowledge Base**: Structured SOP corpus (`data/traffic_sops.json`) indexed into TF-IDF vector space (`models/rag_index.joblib`) for cosine similarity document retrieval.
+- **RAG Knowledge Base**: Structured SOP corpus (`data/traffic_sops.json`) indexed into TF-IDF and ChromaDB vector space (`models/rag_index.joblib`) for cosine similarity document retrieval.
 - **Dual LLM Provider Support**: Google Gemini API (`GEMINI_API_KEY`) and Groq API (`GROQ_API_KEY`).
 - **100% Functional Rule-Based Fallback Engine**: Guarantees full chat assistant operation even without an LLM API key.
 
@@ -97,18 +97,18 @@ Citypulse-AI/
 │   ├── agents/              # Multi-Agent AI System (5 Specialized Agents & Collaboration Engine)
 │   ├── database/            # SQLite Database Connection & Models
 │   ├── ml/                  # Machine Learning (Feature Engineering, Training, Evaluation, Inference, Anomaly Detection, XAI)
-│   ├── rag/                 # RAG Ingestion & Cosine Similarity Retriever
+│   ├── rag/                 # RAG Ingestion & Similarity Retriever (ChromaDB + TF-IDF)
 │   ├── services/            # Backend Service Layer
 │   ├── simulation/         # Stateful Traffic Simulator Engine & NetworkX Road Graph
 │   └── main.py              # FastAPI Server Entry Point
 ├── data/                    # Synthetic Traffic Dataset & SOP Knowledge Corpus
 ├── frontend/                # React 18 + Vite + Tailwind CSS + Leaflet Control Center
 │   ├── src/
-│   │   ├── components font/ # Header, Sidebar, KPICards
+│   │   ├── components/      # Header, Sidebar, KPICards
 │   │   ├── pages/           # 8 Control Center Views (Overview, LiveTraffic, Predictions, Incidents, Emergency, DigitalTwin, XAI, Assistant)
 │   │   └── services/        # Frontend API Axios Client
 ├── models/                  # Trained ML Artifacts (congestion_model.joblib, rag_index.joblib)
-├── tests/                   # Automated Pytest Test Suite (38/38 Tests Passed)
+├── tests/                   # Automated Pytest Test Suite (40/40 Tests Passed)
 ├── .env.example             # Environment Variable Template
 ├── requirements.txt         # Python Backend Dependencies
 └── README.md                # Technical Documentation
@@ -162,7 +162,7 @@ The project includes an automated Pytest suite covering database initialization,
 ```bash
 # Run pytest test suite
 $env:PYTHONPATH='.'; .\venv\Scripts\pytest
-====================== 38 passed, 1 warning in 38.53s =======================
+====================== 40 passed, 1 warning in 35.24s =======================
 ```
 
 ---
