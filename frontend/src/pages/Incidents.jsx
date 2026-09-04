@@ -3,6 +3,8 @@ import { AlertTriangle, PlusCircle, ShieldAlert, Cpu, Activity, Clock, CheckCirc
 import { getIncidents, createIncident } from '../services/api';
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+
 export default function Incidents() {
   const [incidents, setIncidents] = useState([]);
   const [anomalies, setAnomalies] = useState([]);
@@ -16,7 +18,7 @@ export default function Incidents() {
     try {
       const [incRes, anoRes] = await Promise.all([
         getIncidents(),
-        axios.get('http://localhost:8000/api/incidents/anomalies')
+        axios.get(`${API_BASE_URL}/api/incidents/anomalies`)
       ]);
       setIncidents(incRes.incidents || []);
       setAnomalies(anoRes.data.anomalies || []);

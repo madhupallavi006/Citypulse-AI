@@ -3,6 +3,8 @@ import { HelpCircle, BarChart2, Lightbulb, Sparkles, SlidersHorizontal, ShieldCh
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+
 export default function ExplainableAI() {
   const [selectedRoad, setSelectedRoad] = useState('NH16-03');
   const [explanationData, setExplanationData] = useState(null);
@@ -11,7 +13,7 @@ export default function ExplainableAI() {
   const fetchExplanation = async (roadId) => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:8000/api/traffic/explain/${roadId}`);
+      const res = await axios.get(`${API_BASE_URL}/api/traffic/explain/${roadId}`);
       setExplanationData(res.data.explanation);
     } catch (err) {
       console.error('Failed to load XAI explanation:', err);

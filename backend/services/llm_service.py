@@ -49,18 +49,47 @@ def rule_based_fallback_assistant(query: str, rag_sops: list) -> str:
         )
 
 def process_operator_chat(query: str):
+    openai_key = os.getenv("OPENAI_API_KEY", "") or os.getenv("LLM_API_KEY", "")
     gemini_key = os.getenv("GEMINI_API_KEY", "")
     groq_key = os.getenv("GROQ_API_KEY", "")
     
     rag_sops = retrieve_relevant_sops(query, top_k=2)
     
+    # Try OpenAI API if key exists
+    if openai_key and openai_key.strip():
+        try:
+            sop_context = "\n".join([f"SOP: {s['title']} - {s['content']}" for s in rag_sops])
+            model = os.getenv("LLM_MODEL", "gpt-4o-mini")
+            url = "https://api.openai.com/v1/chat/completions"
+            headers = {"Authorization": f"Bearer {openai_key.strip()}", "Content-Type": "application/json"}
+            payload = json.dumps({
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": f"You are CityPulse AI Operator Assistant. Context:\n{sop_context}"},
+                    {"role": "user", "content": query}
+                ]
+            }).encode("utf-8")
+            req = urllib.request.Request(url, data=payload, headers=headers)
+            
+            with urllib.request.urlopen(req, timeout=8) as response:
+                if response.status == 200:
+                    data = json.loads(response.read().decode("utf-8"))
+                    text = data["choices"][0]["message"]["content"]
+                    return {
+                        "response": text,
+                        "provider_mode": "OPENAI LLM ACTIVE",
+                        "rag_sources": rag_sops
+                    }
+        except Exception:
+            print("OpenAI API call failed. Falling back to next LLM provider or rule engine.")
+
     # Try Gemini API if key exists
     if gemini_key and gemini_key.strip():
         try:
             sop_context = "\n".join([f"SOP: {s['title']} - {s['content']}" for s in rag_sops])
             prompt = f"Context SOPs:\n{sop_context}\n\nOperator Question: {query}"
             
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={gemini_key}"
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={gemini_key.strip()}"
             payload = json.dumps({"contents": [{"parts": [{"text": prompt}]}]}).encode("utf-8")
             req = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"})
             
@@ -73,15 +102,15 @@ def process_operator_chat(query: str):
                         "provider_mode": "GEMINI LLM ACTIVE",
                         "rag_sources": rag_sops
                     }
-        except Exception as e:
-            print(f"Gemini API call failed: {e}. Falling back to Rule-Based Assistant.")
+        except Exception:
+            print("Gemini API call failed. Falling back to next LLM provider or rule engine.")
 
     # Try Groq API if key exists
     if groq_key and groq_key.strip():
         try:
             sop_context = "\n".join([f"SOP: {s['title']} - {s['content']}" for s in rag_sops])
             url = "https://api.groq.com/openai/v1/chat/completions"
-            headers = {"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"}
+            headers = {"Authorization": f"Bearer {groq_key.strip()}", "Content-Type": "application/json"}
             payload = json.dumps({
                 "model": "llama-3.3-70b-versatile",
                 "messages": [
@@ -100,8 +129,8 @@ def process_operator_chat(query: str):
                         "provider_mode": "GROQ LLM ACTIVE",
                         "rag_sources": rag_sops
                     }
-        except Exception as e:
-            print(f"Groq API call failed: {e}. Falling back to Rule-Based Assistant.")
+        except Exception:
+            print("Groq API call failed. Falling back to Rule-Based Assistant.")
 
     # Rule-Based Fallback Engine (100% functional without API key)
     fallback_response = rule_based_fallback_assistant(query, rag_sops)

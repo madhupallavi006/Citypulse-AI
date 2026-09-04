@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Activity, Radio, Cpu, RefreshCw, Zap, CloudRain, Ambulance, Users } from 'lucide-react';
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+
 export default function Header({ systemOnline, onRefresh }) {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
   const [activeScenario, setActiveScenario] = useState('');
@@ -13,7 +15,7 @@ export default function Header({ systemOnline, onRefresh }) {
 
   const triggerDemo = async (scenarioId, name) => {
     try {
-      await axios.post(`http://localhost:8000/api/demo/trigger/${scenarioId}`);
+      await axios.post(`${API_BASE_URL}/api/demo/trigger/${scenarioId}`);
       setActiveScenario(name);
       if (onRefresh) onRefresh();
     } catch (err) {

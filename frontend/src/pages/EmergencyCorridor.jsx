@@ -3,6 +3,8 @@ import { Ambulance, ShieldAlert, CheckCircle2, Bus, ArrowRight, Zap, Clock } fro
 import { getEmergencyStatus, simulateEmergency } from '../services/api';
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+
 export default function EmergencyCorridor() {
   const [emergencyData, setEmergencyData] = useState(null);
   const [transitData, setTransitData] = useState([]);
@@ -15,7 +17,7 @@ export default function EmergencyCorridor() {
     try {
       const [emgRes, transRes] = await Promise.all([
         getEmergencyStatus(),
-        axios.get('http://localhost:8000/api/emergency/transit')
+        axios.get(`${API_BASE_URL}/api/emergency/transit`)
       ]);
       setEmergencyData(emgRes);
       setTransitData(transRes.data.bus_priorities || []);

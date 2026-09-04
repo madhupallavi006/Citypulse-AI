@@ -63,6 +63,7 @@ export default function AIAssistant() {
 
         {/* Active Provider Mode Badge */}
         <span className={`px-3 py-1 text-xs font-mono rounded-full flex items-center gap-1.5 border ${
+          activeMode.includes('OPENAI') ? 'bg-blue-500/10 text-blue-300 border-blue-500/30' :
           activeMode.includes('GEMINI') ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30' :
           activeMode.includes('GROQ') ? 'bg-purple-500/10 text-purple-300 border-purple-500/30' :
           'bg-amber-500/10 text-amber-300 border-amber-500/30'

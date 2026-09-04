@@ -9,5 +9,5 @@ def test_process_operator_chat_without_api_keys():
     res = process_operator_chat("Recommend green corridor for ambulance at Vani Vihar Square")
     assert "response" in res
     assert "provider_mode" in res
-    assert res["provider_mode"] in ["RULE-BASED FALLBACK ACTIVE", "GEMINI LLM ACTIVE", "GROQ LLM ACTIVE"]
+    assert res["provider_mode"] in ["RULE-BASED FALLBACK ACTIVE", "OPENAI LLM ACTIVE", "GEMINI LLM ACTIVE", "GROQ LLM ACTIVE"]
     assert len(res["rag_sources"]) > 0
